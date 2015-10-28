@@ -4,7 +4,7 @@ import edu.towson.cis.cosc455.ftchen.project1.interfaces.SyntaxAnalyzer;
 
 public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 
-	@Override
+	//@Override
 	public void markdown() throws CompilerException {
 		if(MyCompiler.currentToken.equalsIgnoreCase(Tokens.DOCB))
 		{
@@ -13,91 +13,91 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 
 	}
 
-	@Override
+	//@Override
 	public void head() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void title() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void body() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void paragraph() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void innerText() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void variableDefine() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void variableUse() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void bold() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void italics() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void listitem() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void innerItem() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void link() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void audio() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void video() throws CompilerException {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void newline() throws CompilerException {
 		// TODO Auto-generated method stub
 

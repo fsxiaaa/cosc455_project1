@@ -4,31 +4,31 @@ import edu.towson.cis.cosc455.ftchen.project1.interfaces.LexicalAnalyzer;
 
 public class MyLexicalAnalyzer implements LexicalAnalyzer {
 
-	@Override
+	//@Override
 	public void getNextToken() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void getCharacter() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public void addCharacter() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	//@Override
 	public boolean isSpace(String c) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	//@Override
 	public boolean lookupToken() {
 		// TODO Auto-generated method stub
 		return false;

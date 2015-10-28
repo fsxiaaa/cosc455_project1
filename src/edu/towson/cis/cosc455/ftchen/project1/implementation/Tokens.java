@@ -15,5 +15,13 @@ public class Tokens {
 	public static final String BOLD = "**";
 	public static final String ITALICS = "*";
 	public static final String LISTITEMB = "+";
-	
+	public static final String LISTITEME = ";";
+	public static final String NEWLINE = "~";
+	public static final String LINKB = "[";
+	public static final String LINKE = "]";
+	public static final String AUDIO = "@";
+	public static final String VIDEO = "%";
+	public static final String ADDRESSB = "(";
+	public static final String ADDRESSE = ")";
+	//TEXT
 }
