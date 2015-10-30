@@ -44,7 +44,7 @@ public class MyCompiler {
 			lexicalAnalyzer.getNextToken();
 			System.out.println("Lexical Analyzer");
 		}
-		else{
+		else {
 			//INVALID FILE
 			System.out.println("Error, invalid file. File extension must be .mkd");
 		}

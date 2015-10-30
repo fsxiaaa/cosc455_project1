@@ -4,11 +4,16 @@ import edu.towson.cis.cosc455.ftchen.project1.interfaces.LexicalAnalyzer;
 
 public class MyLexicalAnalyzer implements LexicalAnalyzer {
 
+	private String sourceLine = "";
 	private int position = currentPosition;
+	private String nextChar = nextCharacter;
 	
-	public void start(String s)
+	public void start(String line)
 	{
-		System.out.println(position);
+		sourceLine = line;
+		
+		getNonBlank();
+		getCharacter();
 	}
 	
 	//@Override
@@ -21,23 +26,30 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	//@Override
 	public void getCharacter() {
 		// TODO Auto-generated method stub
-		while (!isSpace(nextCharacter)) {
-			addCharacter();
-			//position++
+		if (position < sourceLine.length()) {
+			nextChar = sourceLine.substring(position, position++);
 		}
-		//currentPosition++ so that it's not a space
+		else {
+			nextChar = "\n";
+		}
+	}
+	
+	public void getNonBlank() {
+		while(isSpace(nextChar)) {
+			getCharacter();
+		}
 	}
 
 	//@Override
 	public void addCharacter() {
 		// TODO Auto-generated method stub
-		MyCompiler.nextToken = MyCompiler.nextToken + nextCharacter;	
+		MyCompiler.nextToken = MyCompiler.nextToken + nextChar;	
 	}
 
 	//@Override
 	public boolean isSpace(String c) {
 		// TODO Auto-generated method stub
-		if (nextCharacter.equals(" ")){
+		if (nextChar.equals(" ")){
 			return true;
 		}
 		return false;
