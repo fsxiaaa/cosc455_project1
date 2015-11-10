@@ -1,5 +1,7 @@
 package edu.towson.cis.cosc455.ftchen.project1.implementation;
 
+import java.util.*;
+
 public class Tokens {
 	public static final String DOCB = "#BEGIN";
 	public static final String DOCE = "#END";

@@ -18,6 +18,13 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		if (isSpecial(nextChar)) {
 			System.out.println("is Special");
 			getNextToken();
+			if(lookupToken()) {
+				addToken();
+			}
+		}
+		else
+		{
+			System.out.println("entered else");
 		}
 	}
 	
@@ -25,10 +32,13 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	public void getNextToken() {
 		// TODO Auto-generated method stub
 		MyCompiler.nextToken = nextChar;
+		getCharacter();
 		while (!isSpace(nextChar)) {
-			getCharacter();
 			System.out.println(nextChar);
 			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
+			System.out.println("added " + nextChar);
+			System.out.println("nextToken looks like " + MyCompiler.nextToken);
+			getCharacter();
 		}
 	}
 
@@ -75,7 +85,22 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	//@Override
 	public boolean lookupToken() {
 		// TODO Auto-generated method stub
+		System.out.println("looking up token");
+		for (int i = 0; i < MyCompiler.tokens.size(); i++) {
+			System.out.println("tokens size is " + MyCompiler.tokens.size() + " i = " + i);
+			if (MyCompiler.tokens.get(i).equalsIgnoreCase(MyCompiler.nextToken)) {
+				System.out.println("Valid token!");
+				return true;
+			}
+			else {
+				System.out.println("Invalid token!");
+				return false;
+			}
+		}
 		return false;
 	}
-
+	
+	public void addToken (){
+		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
+	}
 }
