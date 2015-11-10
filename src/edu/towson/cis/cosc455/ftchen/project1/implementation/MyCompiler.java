@@ -56,12 +56,12 @@ public class MyCompiler {
 				fr = new FileReader(args[0]);
 				br = new BufferedReader(fr);
 				String sourceLine = null;
-				//while ((sourceLine = br.readLine()) != null){
-				sourceLine = br.readLine(); //REMOVE
+				while ((sourceLine = br.readLine()) != null){
+				//sourceLine = br.readLine(); //REMOVE
 					//Call Lexical Analyzer
 					System.out.println("sourceLine: "+ sourceLine);
 					lexicalAnalyzer.start(sourceLine);
-				//}
+				}
 				
 			} catch (FileNotFoundException e) {
 				System.out.println("Error. File not found.");
@@ -74,15 +74,16 @@ public class MyCompiler {
 			
 			//Call Lexical Analyzer
 			lexicalAnalyzer.getNextToken();
-			System.out.println("Lexical Analyzer");
+			System.out.println("The gathered tokens are: ");
+			for(String s : gatheredTokens) {
+				System.out.println(":: " + s);
+			}
 		}
 		else {
 			//INVALID FILE
 			System.out.println("Error, invalid file. File extension must be .mkd");
 		}
-		
-		System.out.println(args[0]);
-		
+				
 		System.out.println("still runs");
 	}
 

@@ -12,31 +12,48 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	{
 		System.out.println("Running");
 		sourceLine = line;
+		position = 0;
 		System.out.println("line is: " + line);
 		
 		getCharacter();
-		if (isSpecial(nextChar)) {
-			System.out.println("is Special");
-			getNextToken();
-			if(lookupToken()) {
+		while (position < sourceLine.length()) {
+			System.out.println("Position is: " + position);
+			if (isSpecial(nextChar)) {
+				System.out.println("is Special");
+				getNextToken();
+				if(lookupToken()) {
+					addToken();
+				}
+			}
+			else
+			{
+				System.out.println("entered else. start getting other characters.");
+				getNextText();
 				addToken();
 			}
-		}
-		else
-		{
-			System.out.println("entered else");
 		}
 	}
 	
 	//@Override
 	public void getNextToken() {
-		// TODO Auto-generated method stub
 		MyCompiler.nextToken = nextChar;
 		getCharacter();
-		while (!isSpace(nextChar)) {
+		while (!isSpace(nextChar) && position < sourceLine.length()) {
 			System.out.println(nextChar);
 			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
-			System.out.println("added " + nextChar);
+			System.out.println("added " + nextChar + " as token");
+			System.out.println("nextToken looks like " + MyCompiler.nextToken);
+			getCharacter();
+		}
+	}
+	
+	public void getNextText() {
+		MyCompiler.nextToken = nextChar;
+		getCharacter();
+		while (!isSpecial(nextChar) && position < sourceLine.length()) {
+			System.out.println(nextChar);
+			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
+			System.out.println("added " + nextChar + " to nextToken");
 			System.out.println("nextToken looks like " + MyCompiler.nextToken);
 			getCharacter();
 		}
@@ -44,27 +61,23 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 
 	//@Override
 	public void getCharacter() {
-		// TODO Auto-generated method stub
 		if (position < sourceLine.length()) {
+			System.out.println("position is: " + position);
 			nextChar = sourceLine.substring(position, position+1);
 			System.out.println("Next character is:" + nextChar);
 			position++;
-		}
-		else {
-			nextChar = "\n";
 		}
 	}
 
 	//@Override
 	public void addCharacter() {
-		// TODO Auto-generated method stub
 		MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 	}
 
 	//@Override
 	public boolean isSpace(String c) {
-		// TODO Auto-generated method stub
 		if (nextChar.equals(" ")){
+			System.out.println("IS SPACE!");
 			return true;
 		}
 		return false;
@@ -84,23 +97,21 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 
 	//@Override
 	public boolean lookupToken() {
-		// TODO Auto-generated method stub
-		System.out.println("looking up token");
-		for (int i = 0; i < MyCompiler.tokens.size(); i++) {
-			System.out.println("tokens size is " + MyCompiler.tokens.size() + " i = " + i);
-			if (MyCompiler.tokens.get(i).equalsIgnoreCase(MyCompiler.nextToken)) {
+		System.out.println("looking up: " + MyCompiler.nextToken);
+		for (String s : MyCompiler.tokens)
+		{
+			if (s.equalsIgnoreCase(MyCompiler.nextToken)) {
 				System.out.println("Valid token!");
 				return true;
 			}
-			else {
-				System.out.println("Invalid token!");
-				return false;
-			}
 		}
+		System.out.println("Invalid token!");
+		//Error Message -Lexical Error
 		return false;
 	}
 	
 	public void addToken (){
 		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
+		System.out.println("added " + MyCompiler.nextToken + " to gatheredTokens");
 	}
 }
