@@ -57,9 +57,7 @@ public class MyCompiler {
 				br = new BufferedReader(fr);
 				String sourceLine = null;
 				while ((sourceLine = br.readLine()) != null){
-				//sourceLine = br.readLine(); //REMOVE
 					//Call Lexical Analyzer
-					System.out.println("sourceLine: "+ sourceLine);
 					lexicalAnalyzer.start(sourceLine);
 				}
 				
@@ -76,7 +74,7 @@ public class MyCompiler {
 			lexicalAnalyzer.getNextToken();
 			System.out.println("The gathered tokens are: ");
 			for(String s : gatheredTokens) {
-				System.out.println(":: " + s);
+				System.out.println("::" + s + "::");
 			}
 		}
 		else {
