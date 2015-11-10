@@ -10,40 +10,45 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	
 	public void start(String line)
 	{
+		System.out.println("Running");
 		sourceLine = line;
+		System.out.println("line is: " + line);
 		
-		getNonBlank();
 		getCharacter();
+		if (isSpecial(nextChar)) {
+			System.out.println("is Special");
+			getNextToken();
+		}
 	}
 	
 	//@Override
 	public void getNextToken() {
 		// TODO Auto-generated method stub
-		getCharacter();
-		lookupToken();
+		MyCompiler.nextToken = nextChar;
+		while (!isSpace(nextChar)) {
+			getCharacter();
+			System.out.println(nextChar);
+			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
+		}
 	}
 
 	//@Override
 	public void getCharacter() {
 		// TODO Auto-generated method stub
 		if (position < sourceLine.length()) {
-			nextChar = sourceLine.substring(position, position++);
+			nextChar = sourceLine.substring(position, position+1);
+			System.out.println("Next character is:" + nextChar);
+			position++;
 		}
 		else {
 			nextChar = "\n";
-		}
-	}
-	
-	public void getNonBlank() {
-		while(isSpace(nextChar)) {
-			getCharacter();
 		}
 	}
 
 	//@Override
 	public void addCharacter() {
 		// TODO Auto-generated method stub
-		MyCompiler.nextToken = MyCompiler.nextToken + nextChar;	
+		MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 	}
 
 	//@Override
@@ -57,8 +62,10 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	
 	public boolean isSpecial(String c) {
 		if (c.equals("#") || c.equals("^") || c.equals("<") || c.equals("{") || c.equals("$") || c.equals("*") ||
-				c.equals("+") || c.equals("~") || c.equals("[") || c.equals("@") || c.equals("%"))
+				c.equals("+") || c.equals("~") || c.equals("[") || c.equals("@") || c.equals("%")) {
+			System.out.println("IS SPECIAL");
 			return true;
+		}
 		else {
 			return false;
 		}

@@ -1,11 +1,13 @@
 package edu.towson.cis.cosc455.ftchen.project1.implementation;
 
 import java.io.*;
+import java.util.*;
 
 public class MyCompiler {
 
 	public static String currentToken = "";
 	public static String nextToken = "";
+	public static ArrayList tokens = new ArrayList();
 	//MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
 	//MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
 	//MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
@@ -28,6 +30,7 @@ public class MyCompiler {
 				String sourceLine = null;
 				while ((sourceLine = br.readLine()) != null){
 					//Call Lexical Analyzer
+					System.out.println("sourceLine: "+ sourceLine);
 					lexicalAnalyzer.start(sourceLine);
 				}
 				
