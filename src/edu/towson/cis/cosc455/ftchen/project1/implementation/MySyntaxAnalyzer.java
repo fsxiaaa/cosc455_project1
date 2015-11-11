@@ -48,9 +48,11 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 	//@Override
 	public void head() throws CompilerException {
 		try {
+			System.out.println("This is head");
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.HEAD)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				MyCompiler.lexicalAnalyzer.getNextToken();
+				System.out.println("head -> title");
 				title(); //get title
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.HEAD)) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
@@ -69,6 +71,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 	//@Override
 	public void title() throws CompilerException {
 		try {
+			System.out.println("This is title");
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.TITLEB)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				MyCompiler.lexicalAnalyzer.getNextToken();
@@ -90,9 +93,15 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 	//@Override
 	public void body() throws CompilerException {
 		try {
+			System.out.println("This is body");
 			//inner text, body | paragraph, body | newline, body | null
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAB)) {
-				
+				MyCompiler.parseTree.push(MyCompiler.currentToken);
+				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+				MyCompiler.lexicalAnalyzer.getNextToken();
+			}
+			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE)) {
+				System.out.println("body (newline)");
 			}
 			else
 				throw new CompilerException("Error. Body must start with { and end with }");

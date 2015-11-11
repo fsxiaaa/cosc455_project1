@@ -14,6 +14,14 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		position = 0;
 		
 		getNextToken();
+		try {
+			MyCompiler.syntaxAnalyzer.markdown();
+		}
+		catch (CompilerException e)
+		{
+			System.out.println(e.getErrorMessage());
+			System.exit(1);
+		}
 		//checkToken();
 		
 		/*
@@ -56,7 +64,8 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		
 		//System.out.println(sourceLine.substring(position));
 		getCharacter();
-		System.out.println("finished");
+		
+		//System.out.println("finished");
 		//while (position < sourceLine.length()) {
 			if (isSpecial(nextChar)) {
 				MyCompiler.nextToken = nextChar;
@@ -68,7 +77,7 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 				try {
 					if (lookupToken()) {
 						addToken();
-						MyCompiler.syntaxAnalyzer.markdown();
+						//MyCompiler.syntaxAnalyzer.markdown();
 					}
 					else
 						throw new CompilerException("Error. " + MyCompiler.nextToken + " is an invalid token."
@@ -136,6 +145,7 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 			System.out.println("getting rid of: " + nextChar + ".");
 			getCharacter();
 		}
+		//reset position for nextChar
 		position--;
 	}
 

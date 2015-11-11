@@ -26,4 +26,55 @@ public class Tokens {
 	public static final String ADDRESSB = "(";
 	public static final String ADDRESSE = ")";
 	//TEXT
+	
+	public boolean isText(String s) {
+		if (s.equalsIgnoreCase("a") ||
+				s.equalsIgnoreCase("b") ||
+				s.equalsIgnoreCase("c") ||
+				s.equalsIgnoreCase("d") ||
+				s.equalsIgnoreCase("e") ||
+				s.equalsIgnoreCase("f") ||
+				s.equalsIgnoreCase("g") ||
+				s.equalsIgnoreCase("h") ||
+				s.equalsIgnoreCase("i") ||
+				s.equalsIgnoreCase("j") ||
+				s.equalsIgnoreCase("k") ||
+				s.equalsIgnoreCase("l") ||
+				s.equalsIgnoreCase("m") ||
+				s.equalsIgnoreCase("n") ||
+				s.equalsIgnoreCase("o") ||
+				s.equalsIgnoreCase("p") ||
+				s.equalsIgnoreCase("q") ||
+				s.equalsIgnoreCase("r") ||
+				s.equalsIgnoreCase("s") ||
+				s.equalsIgnoreCase("t") ||
+				s.equalsIgnoreCase("u") ||
+				s.equalsIgnoreCase("v") ||
+				s.equalsIgnoreCase("w") ||
+				s.equalsIgnoreCase("x") ||
+				s.equalsIgnoreCase("y") ||
+				s.equalsIgnoreCase("z") ||
+				s.equalsIgnoreCase("0") ||
+				s.equalsIgnoreCase("1") ||
+				s.equalsIgnoreCase("2") ||
+				s.equalsIgnoreCase("3") ||
+				s.equalsIgnoreCase("4") ||
+				s.equalsIgnoreCase("5") ||
+				s.equalsIgnoreCase("6") ||
+				s.equalsIgnoreCase("7") ||
+				s.equalsIgnoreCase("8") ||
+				s.equalsIgnoreCase("9") ||
+				s.equalsIgnoreCase(",") ||
+				s.equalsIgnoreCase(".") ||
+				s.equalsIgnoreCase("\"") ||
+				s.equalsIgnoreCase(":") ||
+				s.equalsIgnoreCase("?") ||
+				s.equalsIgnoreCase("!") ||
+				s.equalsIgnoreCase("/") ||
+				s.equalsIgnoreCase("\n") ||
+				s.equalsIgnoreCase("\t"))
+			return true;
+		else
+			return false;
+	}
 }
