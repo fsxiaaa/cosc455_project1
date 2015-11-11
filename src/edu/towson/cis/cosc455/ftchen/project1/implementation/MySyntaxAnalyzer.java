@@ -6,9 +6,14 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 
 	//@Override
 	public void markdown() throws CompilerException {
-		if(MyCompiler.currentToken.equalsIgnoreCase(Tokens.DOCB))
-		{
-			//do stuff
+		if(MyCompiler.currentToken.equalsIgnoreCase(Tokens.DOCB)) {
+			MyCompiler.parseTree.push(MyCompiler.currentToken);
+			MyCompiler.lexicalAnalyzer.getNextToken();
+			//code
+			if(MyCompiler.currentToken.equalsIgnoreCase(Tokens.DOCE)) {
+				MyCompiler.parseTree.push(MyCompiler.currentToken);
+				MyCompiler.lexicalAnalyzer.getNextToken();
+			}
 		}
 
 	}

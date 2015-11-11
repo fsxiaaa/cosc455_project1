@@ -9,17 +9,14 @@ public class MyCompiler {
 	public static String nextToken = "";
 	public static ArrayList <String> tokens = new ArrayList <String>();
 	public static ArrayList <String> gatheredTokens = new ArrayList <String>();
-	//MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
-	//MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
-	//MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
+	public static MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
+	public static MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
+	public static MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
+	public static Stack <String> parseTree = new Stack <String>();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("runs");
-		
-		MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
-		MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
-		MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
 		
 		//Generate ArrayList of valid tokens
 		tokens.add(Tokens.DOCB);
@@ -45,9 +42,7 @@ public class MyCompiler {
 		tokens.add(Tokens.ADDRESSB);
 		tokens.add(Tokens.ADDRESSE);
 		
-		
-		
-		
+		//Check file extension and if possible, read from file
 		if (args[0].substring(args[0].length()-4,args[0].length()).equals(".mkd")){
 			//VALID FILE - READ FROM FILE
 			FileReader fr;
@@ -63,10 +58,10 @@ public class MyCompiler {
 				
 			} catch (FileNotFoundException e) {
 				System.out.println("Error. File not found.");
-				System.exit(0);
+				System.exit(1);
 			} catch (IOException e) {
 				System.out.println("Error. I/O Exception occurred. Failed to read from file.");
-				System.exit(0);
+				System.exit(1);
 			}
 			
 			
