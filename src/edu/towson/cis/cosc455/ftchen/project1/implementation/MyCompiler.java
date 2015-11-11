@@ -50,11 +50,16 @@ public class MyCompiler {
 			try {
 				fr = new FileReader(args[0]);
 				br = new BufferedReader(fr);
-				String sourceLine = null;
-				while ((sourceLine = br.readLine()) != null){
-					//Call Lexical Analyzer
-					lexicalAnalyzer.start(sourceLine);
+				String sourceLine = "";
+				String line = "";
+				while ( (line = br.readLine()) != null){
+					//generate all sourceLine from document for easy parsing
+					sourceLine = sourceLine + line;
+					//System.out.println("sourceline is now \"" + sourceLine + "\"");
 				}
+				//System.out.println("!!!\n" + sourceLine + "\n!!!");
+				//Call Lexical Analyzer
+				lexicalAnalyzer.start(sourceLine);
 				
 			} catch (FileNotFoundException e) {
 				System.out.println("Error. File not found.");
@@ -66,7 +71,7 @@ public class MyCompiler {
 			
 			
 			//Call Lexical Analyzer
-			lexicalAnalyzer.getNextToken();
+			//lexicalAnalyzer.getNextToken();
 			System.out.println("The gathered tokens are: ");
 			for(String s : gatheredTokens) {
 				System.out.println("::" + s + "::");

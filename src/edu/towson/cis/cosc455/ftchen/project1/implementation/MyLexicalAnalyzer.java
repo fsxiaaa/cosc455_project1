@@ -54,8 +54,10 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		}
 		*/
 		
+		//System.out.println(sourceLine.substring(position));
 		getCharacter();
-		while (position < sourceLine.length()) {
+		System.out.println("finished");
+		//while (position < sourceLine.length()) {
 			if (isSpecial(nextChar)) {
 				MyCompiler.nextToken = nextChar;
 				getCharacter();
@@ -69,7 +71,7 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 						MyCompiler.syntaxAnalyzer.markdown();
 					}
 					else
-						throw new CompilerException("Error! " + MyCompiler.nextToken + " is an invalid token."
+						throw new CompilerException("Error. " + MyCompiler.nextToken + " is an invalid token."
 								+ " A lexical error has occured.");
 				}
 				catch (CompilerException e) {
@@ -77,12 +79,14 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 					System.exit(1);
 				}
 			}
-			else
+			//else if (isSpace(nextChar))
 			{
-				getNextText();
-				addToken();
+				//getNextText();
+				//addToken();
+				//ridWhiteSpace();
+				//getNextToken();
 			}
-		}
+		//}
 	}
 	
 	public void getNextText() {
@@ -124,7 +128,15 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		else {
 			return false;
 		}
-		
+	}
+	
+	public void ridWhiteSpace() {
+		System.out.println("Ridding White Space");
+		while (isSpace(nextChar)) {
+			System.out.println("getting rid of: " + nextChar + ".");
+			getCharacter();
+		}
+		position--;
 	}
 
 	//@Override
