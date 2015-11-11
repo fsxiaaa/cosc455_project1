@@ -55,9 +55,7 @@ public class MyCompiler {
 				while ( (line = br.readLine()) != null){
 					//generate all sourceLine from document for easy parsing
 					sourceLine = sourceLine + line;
-					//System.out.println("sourceline is now \"" + sourceLine + "\"");
 				}
-				//System.out.println("!!!\n" + sourceLine + "\n!!!");
 				//Call Lexical Analyzer
 				lexicalAnalyzer.start(sourceLine);
 				
@@ -71,7 +69,8 @@ public class MyCompiler {
 			
 			
 			//Call Lexical Analyzer
-			//lexicalAnalyzer.getNextToken();
+			System.out.println();
+			System.out.println();
 			System.out.println("The gathered tokens are: ");
 			for(String s : gatheredTokens) {
 				System.out.println("::" + s + "::");

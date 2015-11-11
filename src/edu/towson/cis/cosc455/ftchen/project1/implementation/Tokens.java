@@ -27,8 +27,8 @@ public class Tokens {
 	public static final String ADDRESSE = ")";
 	//TEXT
 	
-	public boolean isText(String s) {
-		if (s.equalsIgnoreCase("a") ||
+	public static boolean isText(String s) {
+		if (s.substring(0,1).equalsIgnoreCase("a") ||
 				s.equalsIgnoreCase("b") ||
 				s.equalsIgnoreCase("c") ||
 				s.equalsIgnoreCase("d") ||

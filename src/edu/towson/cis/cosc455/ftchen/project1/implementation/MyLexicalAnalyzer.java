@@ -22,50 +22,12 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 			System.out.println(e.getErrorMessage());
 			System.exit(1);
 		}
-		//checkToken();
-		
-		/*
-		getCharacter();
-		while (position < sourceLine.length()) {
-			if (isSpecial(nextChar)) {
-				getNextToken();
-				try {
-					if (lookupToken())
-						addToken();
-					else
-						throw new CompilerException("Error! " + MyCompiler.nextToken + " is an invalid token."
-						+ " A lexical error has occured.");
-				}
-				catch (CompilerException e) {
-					System.out.println(e.getErrorMessage());
-					System.exit(1);
-				}
-				
-			}
-			else
-			{
-				getNextText();
-				addToken();
-			}
-		}
-		 */
 	}
 	
 	//@Override
 	public void getNextToken() {
-		/*
-		MyCompiler.nextToken = nextChar;
-		getCharacter();
-		while (!isSpace(nextChar) && position < sourceLine.length()) {
-			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
-			getCharacter();
-		}
-		*/
-		
-		//System.out.println(sourceLine.substring(position));
 		getCharacter();
 		
-		//System.out.println("finished");
 		//while (position < sourceLine.length()) {
 			if (isSpecial(nextChar)) {
 				MyCompiler.nextToken = nextChar;
@@ -89,22 +51,23 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 				}
 			}
 			//else if (isSpace(nextChar))
-			{
-				//getNextText();
-				//addToken();
-				//ridWhiteSpace();
-				//getNextToken();
+			else{
+				System.out.println("not special. getting next text");
+				getNextText();
+				addToken();
 			}
 		//}
 	}
 	
 	public void getNextText() {
 		MyCompiler.nextToken = nextChar;
+		//System.out.println("next token is::: " + MyCompiler.nextToken);
 		getCharacter();
 		while (!isSpecial(nextChar) && position < sourceLine.length()) {
 			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 			getCharacter();
 		}
+		
 	}
 
 	//@Override
@@ -112,7 +75,7 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		if (position < sourceLine.length()) {
 			nextChar = sourceLine.substring(position, position+1);
 			position++;
-			System.out.println("nextChar is: " + nextChar);
+			//System.out.println("nextChar is: " + nextChar);
 		}
 	}
 
@@ -130,8 +93,10 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	}
 	
 	public boolean isSpecial(String c) {
-		if (c.equals("#") || c.equals("^") || c.equals("<") || c.equals("{") || c.equals("$") || c.equals("*") ||
-				c.equals("+") || c.equals("~") || c.equals("[") || c.equals("@") || c.equals("%")) {
+		if (c.equals("#") || c.equals("^") || c.equals("<") || c.equals(">") || c.equals("{") || c.equals("}")|| 
+				c.equals("$") || c.equals("=") || c.equals("*") || c.equals("+") || c.equals(";") || 
+				c.equals("~") || c.equals("[") || c.equals("]") || c.equals("@") || c.equals("%") || 
+				c.equals("(") || c.equals(")")) {
 			return true;
 		}
 		else {
@@ -140,22 +105,21 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	}
 	
 	public void ridWhiteSpace() {
-		System.out.println("Ridding White Space");
 		while (isSpace(nextChar)) {
-			System.out.println("getting rid of: " + nextChar + ".");
+			System.out.println("Rid white space.");
 			getCharacter();
 		}
-		//reset position for nextChar
+		//reset position for other methods
 		position--;
 	}
 
 	//@Override
 	public boolean lookupToken() {
-		System.out.println("Check " + MyCompiler.nextToken);
+		//System.out.println("Check " + MyCompiler.nextToken);
 		for (String s : MyCompiler.tokens)
 		{
 			if (s.equalsIgnoreCase(MyCompiler.nextToken)) {
-				System.out.println(s + " equals " + MyCompiler.nextToken + ". Return true.");
+				//System.out.println(s + " equals " + MyCompiler.nextToken + ". Return true.");
 				return true;
 			}
 		}
@@ -166,6 +130,6 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	public void addToken (){
 		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
 		MyCompiler.currentToken = MyCompiler.nextToken;
-		System.out.println("added to gatheredTokens: " + MyCompiler.currentToken);
+		System.out.println("currentToken is now: " + MyCompiler.currentToken);
 	}
 }
