@@ -151,8 +151,15 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					body();
 				}
 			}
-			else if (Tokens.isText(MyCompiler.currentToken.substring(0,1)) || 
-					MyCompiler.lexicalAnalyzer.isSpecial(MyCompiler.currentToken)) {
+			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+					MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+					Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 				System.out.println("[(body) text]");
 				System.out.println("[(body) innertext -> body]");
 				innerText();
@@ -188,7 +195,15 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("[paragraph -> variableDefine]");
 					variableDefine();
 				}
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					System.out.println("[paragraph -> innerText]");
 					innerText();
 				}
@@ -210,67 +225,139 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB)) {
 				System.out.println("[innerText -> variableUse]");
 				variableUse();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD)) {
 				System.out.println("[innerText -> bold]");
 				bold();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS)) {
 				System.out.println("[innerText -> italics]");
 				italics();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB)) {
 				System.out.println("[innerText -> list]");
 				listitem();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO)) {
 				System.out.println("[innerText -> audio]");
 				audio();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO)) {
 				System.out.println("[innerText -> video]");
 				video();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB)) {
 				System.out.println("[innerText -> link]");
 				link();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE)) {
 				System.out.println("[innerText -> newline]");
 				newline();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					innerText();
 				}
 			}
 			else if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 				System.out.println("[innerText -> innerText]");
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
-				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				if (Tokens.isText(MyCompiler.currentToken.substring(0,1)) ||
-						MyCompiler.lexicalAnalyzer.isSpecial(MyCompiler.currentToken.substring(0,1))) {
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.AUDIO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
+						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
+						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					System.out.println("repeat innerText");
 					innerText();
 				}
@@ -541,7 +628,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 				System.out.println("[innerItem -> text, innerItem]");
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
-				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
