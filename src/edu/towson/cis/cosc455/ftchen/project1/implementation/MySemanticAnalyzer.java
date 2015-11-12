@@ -123,9 +123,9 @@ public class MySemanticAnalyzer {
 			//System.out.println("Error. A semantic error has occured. Undefined variables attemped to be used.");
 			//System.exit(1);
 		//}
-		System.out.println("\n\n REORDERED: ");
-		while(reordered.size() > 0)
-			System.out.println(reordered.pop());
+		//System.out.println("\n\n REORDERED: ");
+		//while(reordered.size() > 0)
+			//System.out.println(reordered.pop());
 		
 		
 		System.out.println("Stack reordered!");
@@ -200,9 +200,96 @@ public class MySemanticAnalyzer {
 		}
 	}
 	
+	/**
+	 * Organizes the stack to make it ready for direct translating from tokens -> HTML
+	 * returns HTML
+	 * @return String of HTML to be written to file
+	 */
 	public String generateHTML() {
 		String html ="";
+		String current = "";
+		boolean repeat = false;
+		
 		reorderStack();
+		System.out.println(reordered.size());
+		while (!reordered.isEmpty()) {
+			current = reordered.pop();
+			if (current.equalsIgnoreCase(Tokens.DOCB)) {
+				html += "<html>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.DOCE)) {
+				html += "</html>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.HEAD)) {
+				html += "<head>";
+				repeat = true;
+			}
+			else if (current.equalsIgnoreCase(Tokens.HEAD) && repeat) {
+				html += "</head>";
+				repeat = false;
+			}
+			else if (current.equalsIgnoreCase(Tokens.TITLEB)) {
+				html += "<title>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.TITLEE)) {
+				html += "</title>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.PARAB)) {
+				html += "<p>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.PARAE)) {
+				html += "</p>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.BOLD)) {
+				html += "<b>";
+				repeat = true;
+			}
+			else if (current.equalsIgnoreCase(Tokens.BOLD) && repeat) {
+				html = html + "</b>";
+				repeat = false;
+			}
+			else if (current.equalsIgnoreCase(Tokens.ITALICS)) {
+				html += "<i>";
+				repeat = true;
+			}
+			else if (current.equalsIgnoreCase(Tokens.ITALICS) && repeat) {
+				html += "</i>";
+				repeat = false;
+			}
+			else if (current.equalsIgnoreCase(Tokens.LISTITEMB)) {
+				html += "<li>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.LISTITEME)) {
+				html += "</li>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.NEWLINE)) {
+				html += "<br>";
+			}
+			else if (current.equalsIgnoreCase(Tokens.AUDIO)) {
+				reordered.pop(); //pop (
+				current = reordered.pop(); //pop audio address
+				html += "<audio controls> <source src=\"" + current + "\"> </audio>";
+				reordered.pop(); //pop )
+			}
+			else if (current.equalsIgnoreCase(Tokens.VIDEO)) {
+				reordered.pop(); // pop (
+				current = reordered.pop(); //pop video address
+				html = html + "<iframe src=\"" + current + "/>";
+				reordered.pop(); // pop )
+			}
+			else if (current.equalsIgnoreCase(Tokens.LINKB)) {
+				String name = reordered.pop();
+				reordered.pop(); // pop ]
+				reordered.pop(); // pop (
+				current = reordered.pop(); // pop link address
+				html = html + "<a href=\"" + current + "\">" + name + "</a>";
+				reordered.pop();
+			}
+			else { //text
+				html += current;
+			}
+		}
+		
 		return html;
 	}
 }
