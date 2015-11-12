@@ -16,7 +16,7 @@ public class MyCompiler {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("runs");
+		//System.out.println("runs");
 		
 		//Generate ArrayList of valid tokens
 		tokens.add(Tokens.DOCB);
@@ -82,7 +82,7 @@ public class MyCompiler {
 			System.out.println("Error, invalid file. File extension must be .mkd");
 		}
 				
-		System.out.println("still runs");
+		//System.out.println("still runs");
 	}
 
 }

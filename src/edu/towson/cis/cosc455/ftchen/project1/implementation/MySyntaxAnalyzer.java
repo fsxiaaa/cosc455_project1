@@ -40,7 +40,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("SUCCESS!");
 				}
 				else {
-					System.out.println("The current token is: " + MyCompiler.currentToken);
+					//System.out.println("The current token is: " + MyCompiler.currentToken);
 					throw new CompilerException("Error. A syntax error has occured."
 							+ " Document must end with #END.");	
 				}
@@ -121,7 +121,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 	public void body() throws CompilerException {
 		try {
 			System.out.println("[This is body]");
-			System.out.println("Current Token is: " + MyCompiler.currentToken);
+			//System.out.println("Current Token is: " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAB)) {
 				System.out.println("[(body) paragraph]");
 				paragraph();
@@ -169,7 +169,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				}
 			}
 			else {
-				throw new CompilerException("Error. in body");
+				throw new CompilerException("Error. Invalid content/starting tag for body.");
 			}
 			System.out.println("[Finished body]");
 		}
@@ -188,7 +188,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				System.out.println("NEXT TOKEN IS: " + MyCompiler.nextToken);
+				//System.out.println("NEXT TOKEN IS: " + MyCompiler.nextToken);
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.DEFB)) {
 					System.out.println("[paragraph -> variableDefine]");
 					variableDefine();
@@ -306,7 +306,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO)) {
 				System.out.println("[innerText -> video]");
 				video();
-				System.out.println("returned to innertext");
+				//System.out.println("returned to innertext");
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
@@ -364,7 +364,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
 						Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
-					System.out.println("repeat innerText");
+					System.out.println("[repeat innerText]");
 					innerText();
 				}
 			}
@@ -669,21 +669,21 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			//get link text
 			//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 			MyCompiler.lexicalAnalyzer.getNextToken();
-			System.out.println("CURRENT TOKEN: " + MyCompiler.currentToken);
+			//System.out.println("CURRENT TOKEN: " + MyCompiler.currentToken);
 			if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				//get link end
 				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				System.out.println("CURRENT TOKEN2: " + MyCompiler.currentToken);
+				//System.out.println("CURRENT TOKEN2: " + MyCompiler.currentToken);
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.LINKE)) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get address begin
 					//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
-					System.out.println("CURRENT TOKEN3: " + MyCompiler.currentToken);
+					//System.out.println("CURRENT TOKEN3: " + MyCompiler.currentToken);
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
 						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -738,23 +738,23 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get audio address begin
 			MyCompiler.lexicalAnalyzer.getNextToken();
-			System.out.println("1 " + MyCompiler.currentToken);
+			//System.out.println("1 " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				//get audio text
-				System.out.println("2 " + MyCompiler.currentToken);
+				//System.out.println("2 " + MyCompiler.currentToken);
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				System.out.println("3 " + MyCompiler.currentToken);
+				//System.out.println("3 " + MyCompiler.currentToken);
 				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
-					System.out.println("1PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get audio address end
 					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSE)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
-						System.out.println("2PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 						MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 						MyCompiler.lexicalAnalyzer.getNextToken();
 					}
@@ -785,20 +785,20 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get video address begin
 			MyCompiler.lexicalAnalyzer.getNextToken();
-			System.out.println("CURRENT TOKEN 00: " + MyCompiler.currentToken);
+			//System.out.println("CURRENT TOKEN 00: " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				//get video text
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				System.out.println("CURRENT TOKEN 01: " + MyCompiler.currentToken);
+				//System.out.println("CURRENT TOKEN 01: " + MyCompiler.currentToken);
 				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get video address end
 					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
-					System.out.println("CURRENT TOKEN 02: " + MyCompiler.currentToken);
+					//System.out.println("CURRENT TOKEN 02: " + MyCompiler.currentToken);
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSE)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
 						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");

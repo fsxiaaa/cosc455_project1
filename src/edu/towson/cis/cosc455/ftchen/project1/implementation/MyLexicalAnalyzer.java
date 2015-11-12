@@ -37,11 +37,11 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 						MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 						getCharacter();
 					}
-					System.out.println("~~~~~~~~" + MyCompiler.nextToken);
+					//System.out.println("~~~~~~~~" + MyCompiler.nextToken);
 				}
 				try {
 					if (lookupToken()) {
-						System.out.println("LOOKING UP");
+						//System.out.println("LOOKING UP");
 						addToken();
 					}
 					else
@@ -54,8 +54,8 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 				}
 			}
 			else{
-				System.out.println("not special. getting next text");
-				System.out.println("!!!!!!!!!" + MyCompiler.nextToken);
+				//System.out.println("not special. getting next text");
+				//System.out.println("!!!!!!!!!" + MyCompiler.nextToken);
 				getNextText();
 				addToken();
 			}
@@ -133,14 +133,14 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 				return true;
 			}
 		}
-		System.out.println(MyCompiler.nextToken + " :: All failed, returning false.");
+		//System.out.println(MyCompiler.nextToken + " :: All failed, returning false.");
 		return false;
 	}
 	
 	public void addToken (){
 		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
 		MyCompiler.currentToken = MyCompiler.nextToken;
-		System.out.println("Lex says, currentToken is now: " + MyCompiler.currentToken);
-		System.out.println("Lex says, nextChar is: " + nextChar);
+		//System.out.println("Lex says, currentToken is now: " + MyCompiler.currentToken);
+		//System.out.println("Lex says, nextChar is: " + nextChar);
 	}
 }
