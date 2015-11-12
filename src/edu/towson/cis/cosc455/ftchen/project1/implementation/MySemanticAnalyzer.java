@@ -22,19 +22,14 @@ public class MySemanticAnalyzer {
 	 */
 	public void reorderStack() {
 		int variables = -1;
-		int variableCount = 0;
-		boolean repeat = true;
 		//try {
 			while (variables != 0)
 			{
 				variables = 0;
 			do {
-				System.out.println("[While]");
 				System.out.println("Working with: " + MyCompiler.parseTree.peek());
 				if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.USEB)) {
 					//"use" case
-					System.out.println("[use case]");
-					//variables++;
 					if (scopeName.size() > 0) {
 						if (isDeclared(reordered.peek())) {
 							System.out.println(reordered.peek() + " equals " + scopeName.get(scopeName.size()-1));
@@ -43,17 +38,15 @@ public class MySemanticAnalyzer {
 					else {
 						variables++;
 						System.out.println("variable not yet defined");
-						System.out.println(reordered.push(MyCompiler.parseTree.pop())); //push $USE
+						reordered.push(MyCompiler.parseTree.pop()); //push $USE
 					}
 				}
 				else if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFUSEE)) {
 					//"define" case
-					System.out.println("[define case]");
 					reordered.push(MyCompiler.parseTree.pop()); //$END
 					reordered.push(MyCompiler.parseTree.pop()); //name or value
-					System.out.println("DEFINE PEEK: " + MyCompiler.parseTree.peek());
+					MyCompiler.parseTree.peek();
 					if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.EQSIGN)) {
-						System.out.println("defined ");
 						//look for $DEF
 						MyCompiler.parseTree.pop(); //pop =
 						scopeName.add(MyCompiler.parseTree.pop()); //name to scopeName
@@ -63,15 +56,11 @@ public class MySemanticAnalyzer {
 				}
 				else if (isEndToken(MyCompiler.parseTree.peek())) {
 					//"end" case
-					System.out.println("[end case]");
 					determineMatch(MyCompiler.parseTree.peek());
 					reordered.push(MyCompiler.parseTree.pop());
-					System.out.println("reordered PEEK: " + reordered.peek());
 				}
 				else if (isBeginToken(MyCompiler.parseTree.peek())) {
-					System.out.println("[begin case]");
 					if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFB)) {
-						System.out.println("DO SOMETHING");
 						MyCompiler.parseTree.pop(); //pop $DEB
 						//run back through reordered stack to fill in variable usages
 						while (reordered.size() > 0) {
@@ -82,37 +71,31 @@ public class MySemanticAnalyzer {
 									reordered.pop(); //pop variable name
 									MyCompiler.parseTree.push(scopeValue.get(scopeValue.size()-1)); //push variable value
 									reordered.pop(); //pop $END
-									System.out.println("variable replacement ok!");
 									variables--;
 								}
 								else {
-									System.out.println("11111111" + MyCompiler.parseTree.push(Tokens.USEB)); //wrong variable. push $USE
-									System.out.println("22222222" + MyCompiler.parseTree.push(reordered.pop())); //.. push variable name
-									System.out.println("variable replacement not done!");
+									MyCompiler.parseTree.push(Tokens.USEB); //wrong variable. push $USE
+									MyCompiler.parseTree.push(reordered.pop()); //.. push variable name
 								}
 							}
 							else {
-								System.out.println("entered else");
 								if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.PARAE)) {
 									scopeName.remove(scopeName.size()-1);
 									scopeValue.remove(scopeValue.size()-1);
 								}
 								MyCompiler.parseTree.push(reordered.pop()); //regular begin token. Push back to stack.
-								System.out.println("finished else");
 							}
 						}
 						while (MyCompiler.parseTree.size() > 0)
-								System.out.println(reordered.push(MyCompiler.parseTree.pop()));
+								reordered.push(MyCompiler.parseTree.pop());
 					}
 					else
 						reordered.push(MyCompiler.parseTree.pop()); //push begin token back to stack
 				}
 				else {
 					//"text" case
-					System.out.println("[text case]");
 					reordered.push(MyCompiler.parseTree.pop());
 				}
-				System.out.println("variables is: " + variables);
 			} while (!reordered.peek().equalsIgnoreCase(Tokens.DOCB));
 			if (variables != 0)
 				while (reordered.size() > 0)
@@ -211,7 +194,6 @@ public class MySemanticAnalyzer {
 		boolean repeat = false;
 		
 		reorderStack();
-		System.out.println(reordered.size());
 		while (!reordered.isEmpty()) {
 			current = reordered.pop();
 			if (current.equalsIgnoreCase(Tokens.DOCB)) {

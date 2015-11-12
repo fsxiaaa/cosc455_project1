@@ -144,7 +144,7 @@ public class MyCompiler {
 				 * Read from parseTree, add to buffered reader to generate HTML
 				 */
 				bufferedWriter.write(semanticAnalyzer.generateHTML());
-				
+				System.out.println("HTML generated");
 				//bufferedWriter.write("~");
 				//bufferedWriter.newLine();
 				

@@ -393,7 +393,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				System.out.println(MyCompiler.currentToken);
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.EQSIGN)) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -424,12 +423,10 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				else
 					throw new CompilerException("Error. A syntax error has occured. "
 							+ "Variable definition name must be followed by = sign.");
-				System.out.println("Finish variable define");
 			}
 			else
 				throw new CompilerException("Error. A syntax error has occured. "
 						+ "Variable definition $DEF token must be followed by text.");
-			System.out.println("[Finished variableDefine]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -691,7 +688,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 						//get address text
 						//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 						MyCompiler.lexicalAnalyzer.getNextToken();
-						System.out.println("CURRENTTOKEN4: " + MyCompiler.currentToken);
 						if(Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 							MyCompiler.parseTree.add(MyCompiler.currentToken);
 							System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -770,7 +766,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " audio must contain address");
-			System.out.println("[Finished audio]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -786,20 +781,17 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get video address begin
 			MyCompiler.lexicalAnalyzer.getNextToken();
-			//System.out.println("CURRENT TOKEN 00: " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 				MyCompiler.parseTree.add(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				//get video text
 				MyCompiler.lexicalAnalyzer.getNextToken();
-				//System.out.println("CURRENT TOKEN 01: " + MyCompiler.currentToken);
 				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					MyCompiler.parseTree.add(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get video address end
 					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
-					//System.out.println("CURRENT TOKEN 02: " + MyCompiler.currentToken);
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSE)) {
 						MyCompiler.parseTree.add(MyCompiler.currentToken);
 						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -817,7 +809,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " video must contain address");
-			//System.out.println("[Finished video]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -837,7 +828,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 		else
 			throw new CompilerException("Error. A syntax error has occured."
 					+ "Invalid newline.");
-		//System.out.println("[Finished newline]");
 	}
 
 }
