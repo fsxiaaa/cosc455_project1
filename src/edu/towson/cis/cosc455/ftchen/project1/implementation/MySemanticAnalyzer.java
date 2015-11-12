@@ -10,34 +10,111 @@ import java.util.*;
  * @param voidw
  */
 
-
-
-
 public class MySemanticAnalyzer {
+	Stack <String> reordered = new Stack <String>();
+	String match = "";
+	ArrayList <String> scopeName = new ArrayList <String>();
+	ArrayList <String> scopeValue = new ArrayList <String>();
+	int scopePosition = 0;
 	
 	/**
 	 * Method to reorder the parseTree stack, resolving any variables/etc. along the way.
 	 */
 	public void reorderStack() {
-		Stack <String> reordered = new Stack <String>();
-		while (!MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DOCB) && !(MyCompiler.parseTree.size()!=0)) {
-			if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.USEB)) {
-				
-			}
-			else if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFUSEE)) {
-				
-			}
-			else if (isEndToken(MyCompiler.parseTree.peek())) {
-				reordered.push(MyCompiler.parseTree.pop());
-			}
-			else if (isBeginToken(MyCompiler.parseTree.peek())) {
-				
-			}
-			else {
-				//text
-				reordered.push(MyCompiler.parseTree.pop());
+		try {
+			while ((MyCompiler.parseTree.size() > 0)) {
+				System.out.println("[While]");
+				System.out.println("Working with: " + MyCompiler.parseTree.peek());
+				if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.USEB)) {
+					//"use" case
+					System.out.println("[use case]");
+					if (scopeName.size() > 0) {
+						if (isDeclared(reordered.peek())) {
+							System.out.println(reordered.peek() + " equals " + scopeName.get(scopeName.size()-1));
+						}
+					}
+					else {
+						System.out.println("variable not yet defined");
+						reordered.push(MyCompiler.parseTree.pop());
+					}
+				}
+				else if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFUSEE)) {
+					//"define" case
+					System.out.println("[define case]");
+					reordered.push(MyCompiler.parseTree.pop()); //$END
+					reordered.push(MyCompiler.parseTree.pop()); //name or value
+					System.out.println("DEFINE PEEK: " + MyCompiler.parseTree.peek());
+					if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.EQSIGN)) {
+						System.out.println("defined ");
+						//look for $DEF
+						MyCompiler.parseTree.pop(); //pop =
+						scopeName.add(MyCompiler.parseTree.pop()); //name to scopeName
+						scopeValue.add(reordered.pop()); //value to scopeValue
+					}
+				}
+				else if (isEndToken(MyCompiler.parseTree.peek())) {
+					//"end" case
+					System.out.println("[end case]");
+					determineMatch(MyCompiler.parseTree.peek());
+					reordered.push(MyCompiler.parseTree.pop());
+					System.out.println("reordered PEEK: " + reordered.peek());
+				}
+				else if (isBeginToken(MyCompiler.parseTree.peek())) {
+					System.out.println("[begin case]");
+					if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFB)) {
+						System.out.println("DO SOMETHING");
+						MyCompiler.parseTree.pop(); //pop $DEF
+						//run back through reordered stack to fill in variable usages
+						while (reordered.size() > 0) {
+							if (reordered.peek().equalsIgnoreCase(Tokens.USEB)) {
+								reordered.pop(); //pop $USE
+								if (reordered.peek().equalsIgnoreCase(scopeName.get(scopeName.size()-1))) {
+									reordered.pop(); //pop variable name
+									MyCompiler.parseTree.push(scopeValue.get(scopeValue.size()-1)); //push variable value
+									reordered.pop(); //pop $END
+									System.out.println("variable replacement ok!");
+								}
+								else {
+									MyCompiler.parseTree.push(reordered.pop()); //wrong variable. push $USE
+									MyCompiler.parseTree.push(reordered.pop()); //.. push variable name
+									MyCompiler.parseTree.push(reordered.pop()); //.. push $END
+									System.out.println("variable replacement not done!");
+								}
+							}
+							else {
+								System.out.println("entered else");
+								if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.PARAE)) {
+									scopeName.remove(scopeName.size()-1);
+									scopeValue.remove(scopeName.size()-1);
+								}
+								MyCompiler.parseTree.push(reordered.pop()); //regular begin token. Push back to stack.
+							}
+						}
+						while(MyCompiler.parseTree.size() > 0)
+							System.out.println(MyCompiler.parseTree.pop());
+					}
+					else
+						reordered.push(MyCompiler.parseTree.pop()); //push begin token back to stack
+				}
+				else {
+					//"text" case
+					System.out.println("[text case]");
+					reordered.push(MyCompiler.parseTree.pop());
+				}
 			}
 		}
+		catch (Exception e) {
+			System.out.println("Error. A semantic error has occured. Undefined variables attemped to be used.");
+			System.exit(1);
+		}
+		for (String s : scopeName) {
+			System.out.println("\n\n SN VALUE " + s);
+		}
+		System.out.println("\n\n REORDERED: ");
+		while(reordered.size() > 0)
+			System.out.println(reordered.pop());
+		
+		
 		System.out.println("Stack reordered!");
 	}
 	
@@ -69,10 +146,54 @@ public class MySemanticAnalyzer {
 		return false;
 	}
 	
+	/**
+	 * Method to check whether a variable has been declared
+	 * @param s
+	 * @return
+	 */
+	public boolean isDeclared(String s) {
+		for (String t : scopeName) {
+			if (t.equalsIgnoreCase(s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Method to determine matching begin/end token.
+	 */
+	public void determineMatch(String s) {
+		if (s.equalsIgnoreCase(Tokens.DOCE)) {
+			match = Tokens.DOCB;
+		}
+		else if (s.equalsIgnoreCase(Tokens.HEAD)) {
+			match = Tokens.HEAD;
+		}
+		else if (s.equalsIgnoreCase(Tokens.TITLEE)) {
+			match = Tokens.TITLEB;
+		}
+		else if (s.equalsIgnoreCase(Tokens.PARAE)) {
+			match = Tokens.PARAB;
+		}
+		else if (s.equalsIgnoreCase(Tokens.BOLD)) {
+			match = Tokens.BOLD;
+		}
+		else if (s.equalsIgnoreCase(Tokens.ITALICS)) {
+			match = Tokens.ITALICS;
+		}
+		else if (s.equalsIgnoreCase(Tokens.LISTITEME)) {
+			match = Tokens.LISTITEMB;
+		}
+	}
+	
 	public String generateHTML() {
 		String html ="";
+		reorderStack();
 		return html;
 	}
+	
+	
 
 	/*
 	private int treePosition = 0;
