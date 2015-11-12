@@ -38,7 +38,7 @@ public class MyCompiler {
 	public static MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
 	public static MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
 	public static MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
-	public static ArrayList <String> parseTree = new ArrayList <String>();
+	public static Stack <String> parseTree = new Stack <String>();
 	
 	public static void main(String[] args) {
 		
@@ -68,6 +68,29 @@ public class MyCompiler {
 		tokens.add(Tokens.ADDRESSB);
 		tokens.add(Tokens.ADDRESSE);
 		
+		beginTokens.add(Tokens.DOCB);
+		endTokens.add(Tokens.DOCE);
+		beginTokens.add(Tokens.HEAD);
+		endTokens.add(Tokens.HEAD);
+		beginTokens.add(Tokens.TITLEB);
+		endTokens.add(Tokens.TITLEE);
+		beginTokens.add(Tokens.PARAB);
+		endTokens.add(Tokens.PARAE);
+		beginTokens.add(Tokens.DEFB);
+		endTokens.add(Tokens.DEFUSEE);
+		beginTokens.add(Tokens.USEB);
+		endTokens.add(Tokens.DEFUSEE);
+		beginTokens.add(Tokens.BOLD);
+		endTokens.add(Tokens.BOLD);
+		beginTokens.add(Tokens.ITALICS);
+		endTokens.add(Tokens.ITALICS);
+		beginTokens.add(Tokens.LISTITEMB);
+		endTokens.add(Tokens.LISTITEME);
+		beginTokens.add(Tokens.LINKB);
+		endTokens.add(Tokens.LINKE);
+		beginTokens.add(Tokens.ADDRESSB);
+		endTokens.add(Tokens.ADDRESSE);
+		
 		/**
 		 * PRE-PROCESSING
 		 * Check file extension and if possible, read from file.
@@ -93,7 +116,6 @@ public class MyCompiler {
 				/**
 				 * Call Lexical Analyzer
 				 */
-				//System.out.println(sourceLine);
 				lexicalAnalyzer.start(sourceLine);
 			}
 			catch (FileNotFoundException e) {

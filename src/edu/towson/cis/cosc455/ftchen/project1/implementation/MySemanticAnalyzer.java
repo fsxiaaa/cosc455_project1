@@ -9,8 +9,72 @@ import java.util.*;
  * @author Felicia Tchen
  * @param voidw
  */
+
+
+
+
 public class MySemanticAnalyzer {
 	
+	/**
+	 * Method to reorder the parseTree stack, resolving any variables/etc. along the way.
+	 */
+	public void reorderStack() {
+		Stack <String> reordered = new Stack <String>();
+		while (!MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DOCB) && !(MyCompiler.parseTree.size()!=0)) {
+			if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.USEB)) {
+				
+			}
+			else if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFUSEE)) {
+				
+			}
+			else if (isEndToken(MyCompiler.parseTree.peek())) {
+				reordered.push(MyCompiler.parseTree.pop());
+			}
+			else if (isBeginToken(MyCompiler.parseTree.peek())) {
+				
+			}
+			else {
+				//text
+				reordered.push(MyCompiler.parseTree.pop());
+			}
+		}
+		System.out.println("Stack reordered!");
+	}
+	
+	/**
+	 * Method to check whether a token is a begin token or not.
+	 * @param s
+	 * @return boolean
+	 */
+	public boolean isBeginToken(String s) {
+		for (String t : MyCompiler.beginTokens) {
+			if (s.equalsIgnoreCase(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Method to check whether a token is an end token or not.
+	 * @param s
+	 * @return boolean
+	 */
+	public boolean isEndToken(String s) {
+		for (String t : MyCompiler.endTokens) {
+			if (s.equalsIgnoreCase(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String generateHTML() {
+		String html ="";
+		return html;
+	}
+
+	/*
 	private int treePosition = 0;
 	private String value = "";
 	private String name = "";
@@ -229,7 +293,7 @@ public class MySemanticAnalyzer {
 			treePosition++;
 			treePosition++;
 			value = MyCompiler.parseTree.get(treePosition);
-			nameValue = value;
+			String nv = value;
 			System.out.println("n " + name);
 			value = MyCompiler.parseTree.get(treePosition);
 			System.out.println("v " + value);
@@ -251,7 +315,7 @@ public class MySemanticAnalyzer {
 			if (value.equalsIgnoreCase(name))
 			{
 				System.out.println("cries");
-				html += nameValue;
+				html += nv;
 				if (treePosition < MyCompiler.parseTree.size()) {
 					treePosition++;
 					if (treePosition < MyCompiler.parseTree.size()) {
@@ -273,4 +337,5 @@ public class MySemanticAnalyzer {
 		System.out.println(html);
 		return html;
 	}
+	*/
 }
