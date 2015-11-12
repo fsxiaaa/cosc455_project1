@@ -223,7 +223,7 @@ public class MySemanticAnalyzer {
 				html += "</p>";
 			}
 			else if (current.equalsIgnoreCase(Tokens.BOLD)) {
-				html += "<b>";
+				html = html + "<b>";
 				repeat = true;
 			}
 			else if (current.equalsIgnoreCase(Tokens.BOLD) && repeat) {
@@ -231,11 +231,11 @@ public class MySemanticAnalyzer {
 				repeat = false;
 			}
 			else if (current.equalsIgnoreCase(Tokens.ITALICS)) {
-				html += "<i>";
+				html = html + "<i>";
 				repeat = true;
 			}
 			else if (current.equalsIgnoreCase(Tokens.ITALICS) && repeat) {
-				html += "</i>";
+				html = html + "</i>";
 				repeat = false;
 			}
 			else if (current.equalsIgnoreCase(Tokens.LISTITEMB)) {
