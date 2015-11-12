@@ -30,6 +30,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("markdown -> body");
 					body();
 				}
+				System.out.println("[Almost finished markdown]");
 				//end code
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.DOCE)) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
@@ -40,9 +41,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				}
 				else {
 					System.out.println("The current token is: " + MyCompiler.currentToken);
-					throw new CompilerException("Error. Syntax rules not being followed."
-							+ " Invalid begin/end tag pairing."
-							+ " A syntax error has occured.");	
+					throw new CompilerException("Error. A syntax error has occured."
+							+ " Document must end with #END.");	
 				}
 			}
 			else
@@ -77,6 +77,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				else
 					throw new CompilerException("Error. ^ tag must end with another ^ tag."
 							+ " A syntax error has occured.");
+				System.out.println("[Finished head]");
 			}
 		}
 		catch (CompilerException e) {
@@ -107,6 +108,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				else
 					throw new CompilerException("Error. < tag must end with a > tag."
 							+ " A syntax error has occured.");
+				System.out.println("[Finished title]");
 			//}
 		}
 		catch (CompilerException e) {
@@ -123,13 +125,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAB)) {
 				System.out.println("[(body) paragraph]");
 				paragraph();
-				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAE)) {
-					System.out.println("[ending body paragraph]");
-					MyCompiler.parseTree.push(MyCompiler.currentToken);
-					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
-					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
-					MyCompiler.lexicalAnalyzer.getNextToken();
-				}
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE) ||
 							Tokens.isText(MyCompiler.currentToken.substring(0,1)) || 
@@ -168,12 +163,15 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 							Tokens.isText(MyCompiler.currentToken.substring(0,1)) || 
 								MyCompiler.lexicalAnalyzer.isSpecial(MyCompiler.currentToken)) {
 					System.out.println("[(body) paragraph -> body]");
+					System.out.println(MyCompiler.currentToken);
+					MyCompiler.lexicalAnalyzer.getNextToken();
 					body();
 				}
 			}
 			else {
 				throw new CompilerException("Error. in body");
 			}
+			System.out.println("[Finished body]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -207,9 +205,17 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("[paragraph -> innerText]");
 					innerText();
 				}
+				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.PARAE)) {
+					System.out.println("[paragraph]");
+					MyCompiler.parseTree.push(MyCompiler.currentToken);
+					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+					MyCompiler.lexicalAnalyzer.getNextToken();
+				}
 				else
 					throw new CompilerException("Error. { tag must end with a } tag."
 							+ " A syntax error has occured.");
+				System.out.println("[Finished paragraph]");
 			//}
 		}
 		catch (CompilerException e) {
@@ -300,6 +306,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.VIDEO)) {
 				System.out.println("[innerText -> video]");
 				video();
+				System.out.println("returned to innertext");
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.ITALICS) ||
@@ -347,7 +354,6 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
-				//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 				MyCompiler.lexicalAnalyzer.getNextToken();
 				if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.USEB) ||
 						MyCompiler.currentToken.equalsIgnoreCase(Tokens.BOLD) ||
@@ -365,7 +371,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else {
 				throw new CompilerException("Error. Invalid inner text.");
 			}
-			System.out.println("finish innerText");
+			System.out.println("[Finished innerText]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -423,6 +429,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured. "
 						+ "Variable definition $DEF tag must be followed by text.");
+			System.out.println("[Finished variableDefine]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -457,6 +464,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " Invalid variable use syntax. Variable $USE must be followed by text.");
+			System.out.println("[Finished variableUse]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -492,7 +500,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " Bold must be followed by text.");
-			
+			System.out.println("[Finished bold]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -528,7 +536,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " Italics must be followed by text.");
-			
+			System.out.println("[Finished italics]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -569,7 +577,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				System.out.println("[repeat. listitem -> listitem]");
 				listitem();
 			}
-			
+			System.out.println("[Finished listitem]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -644,6 +652,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else {
 				throw new CompilerException("Error. Invalid inner item.");
 			}
+			System.out.println("[Finished inneritem]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -658,7 +667,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			MyCompiler.parseTree.push(MyCompiler.currentToken);
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get link text
-			MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+			//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 			MyCompiler.lexicalAnalyzer.getNextToken();
 			System.out.println("CURRENT TOKEN: " + MyCompiler.currentToken);
 			if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
@@ -672,14 +681,14 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get address begin
-					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+					//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
 					System.out.println("CURRENT TOKEN3: " + MyCompiler.currentToken);
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
 						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 						//get address text
-						MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+						//MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 						MyCompiler.lexicalAnalyzer.getNextToken();
 						System.out.println("CURRENTTOKEN4: " + MyCompiler.currentToken);
 						if(Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
@@ -713,6 +722,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " Invalid link syntax. Link must be followed by text, ], (, text, and )");
+			System.out.println("[Finished link]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -727,23 +737,24 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			MyCompiler.parseTree.push(MyCompiler.currentToken);
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get audio address begin
-			MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 			MyCompiler.lexicalAnalyzer.getNextToken();
+			System.out.println("1 " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				//get audio text
-				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+				System.out.println("2 " + MyCompiler.currentToken);
 				MyCompiler.lexicalAnalyzer.getNextToken();
+				System.out.println("3 " + MyCompiler.currentToken);
 				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
-					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+					System.out.println("1PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 					//get audio address end
 					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSE)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
-						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+						System.out.println("2PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 						MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 						MyCompiler.lexicalAnalyzer.getNextToken();
 					}
@@ -758,6 +769,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " audio must contain address");
+			System.out.println("[Finished audio]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -772,20 +784,21 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			MyCompiler.parseTree.push(MyCompiler.currentToken);
 			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 			//get video address begin
-			MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 			MyCompiler.lexicalAnalyzer.getNextToken();
+			System.out.println("CURRENT TOKEN 00: " + MyCompiler.currentToken);
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSB)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
-				//get audio text
-				MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+				//get video text
 				MyCompiler.lexicalAnalyzer.getNextToken();
+				System.out.println("CURRENT TOKEN 01: " + MyCompiler.currentToken);
 				if (Tokens.isText(MyCompiler.currentToken.substring(0,1))) {
 					MyCompiler.parseTree.push(MyCompiler.currentToken);
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
-					//get audio address end
+					//get video address end
 					MyCompiler.lexicalAnalyzer.ridWhiteSpace();
 					MyCompiler.lexicalAnalyzer.getNextToken();
+					System.out.println("CURRENT TOKEN 02: " + MyCompiler.currentToken);
 					if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.ADDRESSE)) {
 						MyCompiler.parseTree.push(MyCompiler.currentToken);
 						System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -795,7 +808,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					else
 						throw new CompilerException("Error. A syntax error has occured."
 								+ " video address must end with )");
-					}
+				}
 				else
 					throw new CompilerException("Error. A syntax error has occured."
 						+ " video address must contain text");
@@ -803,6 +816,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			else
 				throw new CompilerException("Error. A syntax error has occured."
 						+ " video must contain address");
+			System.out.println("[Finished video]");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -814,12 +828,15 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 	public void newline() throws CompilerException {
 		if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.NEWLINE)) {
 			MyCompiler.parseTree.push(MyCompiler.currentToken);
-		MyCompiler.lexicalAnalyzer.ridWhiteSpace();
-		MyCompiler.lexicalAnalyzer.getNextToken();
+			System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
+			MyCompiler.lexicalAnalyzer.ridWhiteSpace();
+			MyCompiler.lexicalAnalyzer.getNextToken();
+			System.out.println(MyCompiler.currentToken);
 		}
 		else
 			throw new CompilerException("Error. A syntax error has occured."
 					+ "Invalid newline.");
+		System.out.println("[Finished newline]");
 	}
 
 }

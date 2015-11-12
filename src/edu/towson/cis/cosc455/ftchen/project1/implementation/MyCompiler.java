@@ -57,6 +57,7 @@ public class MyCompiler {
 					sourceLine = sourceLine + line;
 				}
 				//Call Lexical Analyzer
+				System.out.println(sourceLine);
 				lexicalAnalyzer.start(sourceLine);
 				
 			} catch (FileNotFoundException e) {

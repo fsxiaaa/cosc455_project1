@@ -27,19 +27,22 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	//@Override
 	public void getNextToken() {
 		getCharacter();
-		
+
 		//while (position < sourceLine.length()) {
 			if (isSpecial(nextChar)) {
 				MyCompiler.nextToken = nextChar;
-				getCharacter();
-				while (!isSpace(nextChar) && position < sourceLine.length()) {
-					MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
+				if (!nextIsAddress(nextChar)) {
 					getCharacter();
+					while (!isSpace(nextChar) && position < sourceLine.length()) {
+						MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
+						getCharacter();
+					}
+					System.out.println("~~~~~~~~" + MyCompiler.nextToken);
 				}
 				try {
 					if (lookupToken()) {
+						System.out.println("LOOKING UP");
 						addToken();
-						//MyCompiler.syntaxAnalyzer.markdown();
 					}
 					else
 						throw new CompilerException("Error. " + MyCompiler.nextToken + " is an invalid token."
@@ -50,9 +53,9 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 					System.exit(1);
 				}
 			}
-			//else if (isSpace(nextChar))
 			else{
 				System.out.println("not special. getting next text");
+				System.out.println("!!!!!!!!!" + MyCompiler.nextToken);
 				getNextText();
 				addToken();
 			}
@@ -104,6 +107,13 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		}
 	}
 	
+	public boolean nextIsAddress(String c) {
+		if (c.equals("@") || c.equals("%") || c.equals("[") || c.equals("]") || c.equals("(") )
+			return true;
+		else
+			return false;
+	}
+	
 	public void ridWhiteSpace() {
 		while (isSpace(nextChar)) {
 			System.out.println("Rid white space.");
@@ -130,6 +140,7 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	public void addToken (){
 		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
 		MyCompiler.currentToken = MyCompiler.nextToken;
-		System.out.println("currentToken is now: " + MyCompiler.currentToken);
+		System.out.println("Lex says, currentToken is now: " + MyCompiler.currentToken);
+		System.out.println("Lex says, nextChar is: " + nextChar);
 	}
 }
