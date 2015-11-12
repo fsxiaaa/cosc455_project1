@@ -42,12 +42,12 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				else {
 					//System.out.println("The current token is: " + MyCompiler.currentToken);
 					throw new CompilerException("Error. A syntax error has occured."
-							+ " Document must end with #END.");	
+							+ " Document must end with matching #END.");	
 				}
 			}
 			else
-				throw new CompilerException("Error. The file must start with #BEGIN."
-						+ " A syntax error has occured.");
+				throw new CompilerException("Error. A syntax error has occured."
+						+ " The document must start with #BEGIN.");
 		}
 		catch (CompilerException e) {
 			System.out.println(e.getErrorMessage());
@@ -75,8 +75,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				}
 				else
-					throw new CompilerException("Error. ^ tag must end with another ^ tag."
-							+ " A syntax error has occured.");
+					throw new CompilerException("Error. A syntax error has occured."
+							+ " A ^ head token must end with another matching ^ token.");
 				System.out.println("[Finished head]");
 			}
 		}
@@ -106,8 +106,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
 				}
 				else
-					throw new CompilerException("Error. < tag must end with a > tag."
-							+ " A syntax error has occured.");
+					throw new CompilerException("Error. A syntax error has occured. "
+							+ " A < title token must end with a matching > token.");
 				System.out.println("[Finished title]");
 			//}
 		}
@@ -163,13 +163,13 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 							Tokens.isText(MyCompiler.currentToken.substring(0,1)) || 
 								MyCompiler.lexicalAnalyzer.isSpecial(MyCompiler.currentToken)) {
 					System.out.println("[(body) paragraph -> body]");
-					System.out.println(MyCompiler.currentToken);
-					MyCompiler.lexicalAnalyzer.getNextToken();
+					//System.out.println(MyCompiler.currentToken);
 					body();
 				}
 			}
 			else {
-				throw new CompilerException("Error. Invalid content/starting tag for body.");
+				throw new CompilerException("Error. A syntax error has occured."
+						+ " Invalid content/token for body. Only {, ~, $USE, **, *, +, @, %, [, and text are allowed.");
 			}
 			System.out.println("[Finished body]");
 		}
@@ -213,8 +213,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 					MyCompiler.lexicalAnalyzer.getNextToken();
 				}
 				else
-					throw new CompilerException("Error. { tag must end with a } tag."
-							+ " A syntax error has occured.");
+					throw new CompilerException("Error. A syntax error has occured. "
+							+ "A { paragraph token must end with a matching } token.");
 				System.out.println("[Finished paragraph]");
 			//}
 		}
@@ -369,7 +369,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				}
 			}
 			else {
-				throw new CompilerException("Error. Invalid inner text.");
+				throw new CompilerException("Error. A syntax error has occured. "
+						+ "innerText may only contain $USE, **, *, +, @, %, [, ~ tokens and text.");
 			}
 			System.out.println("[Finished innerText]");
 		}
@@ -428,7 +429,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			}
 			else
 				throw new CompilerException("Error. A syntax error has occured. "
-						+ "Variable definition $DEF tag must be followed by text.");
+						+ "Variable definition $DEF token must be followed by text.");
 			System.out.println("[Finished variableDefine]");
 		}
 		catch (CompilerException e) {
@@ -563,7 +564,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			}
 			else
 				throw new CompilerException("Error. A syntax error has occured. "
-						+ "Lists can only contain variable usage, bold, italics, links, or text.");
+						+ "Lists can only contain $USE, **, *, [, or text.");
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEME)) {
 				MyCompiler.parseTree.push(MyCompiler.currentToken);
 				System.out.println("PUSHED " + MyCompiler.currentToken + " TO PARSE TREE");
@@ -572,7 +573,7 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 			}
 			else
 				throw new CompilerException("Error. A syntax error has occured."
-						+ " Invalid list item syntax.");
+						+ " Invalid list item syntax. List items must end with the matching ; token.");
 			if (MyCompiler.currentToken.equalsIgnoreCase(Tokens.LISTITEMB)) {
 				System.out.println("[repeat. listitem -> listitem]");
 				listitem();
@@ -650,7 +651,8 @@ public class MySyntaxAnalyzer implements SyntaxAnalyzer {
 				System.out.println("finish innerItem");
 			}
 			else {
-				throw new CompilerException("Error. Invalid inner item.");
+				throw new CompilerException("Error. A syntax error has occured. "
+						+ " Invalid inner item syntax. innerItem may only contain $USE, **, *, [ tokens and text.");
 			}
 			System.out.println("[Finished inneritem]");
 		}
