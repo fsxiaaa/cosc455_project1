@@ -2,15 +2,39 @@ package edu.towson.cis.cosc455.ftchen.project1.implementation;
 
 import java.io.*;
 import java.util.*;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 
 public class MyCompiler {
+	/**
+	 * Opens an HTML file in the default browser. Requires the following imports: 
+	 * 		import java.awt.Desktop;
+	 * 		import java.io.File;
+	 * 		import java.io.IOException;
+	 * @param htmlFileStr the String of an HTML file.
+	 */
+	 void openHTMLFileInBrowser(String htmlFileStr){
+			File file= new File(htmlFileStr.trim());
+			if(!file.exists()){
+				System.err.println("File "+ htmlFileStr +" does not exist.");
+				return;
+			}
+			try{
+				Desktop.getDesktop().browse(file.toURI());
+			}
+			catch(IOException ioe){
+				System.err.println("Failed to open file");
+				ioe.printStackTrace();
+			}
+			return ;
+		}
 
 	public static String currentToken = "";
 	public static String nextToken = "";
 	public static ArrayList <String> tokens = new ArrayList <String>();
 	public static ArrayList <String> beginTokens = new ArrayList <String>();
 	public static ArrayList <String> endTokens = new ArrayList <String>();
-	public static ArrayList <String> gatheredTokens = new ArrayList <String>();
 	public static MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
 	public static MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
 	public static MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
@@ -69,7 +93,7 @@ public class MyCompiler {
 				/**
 				 * Call Lexical Analyzer
 				 */
-				System.out.println(sourceLine);
+				//System.out.println(sourceLine);
 				lexicalAnalyzer.start(sourceLine);
 			}
 			catch (FileNotFoundException e) {
@@ -81,13 +105,9 @@ public class MyCompiler {
 				System.exit(1);
 			}
 			
-			/*
-			 */
 			System.out.println();
-			System.out.println("The gathered tokens are: ");
-			for(String s : gatheredTokens) {
-				System.out.println("::" + s + "::");
-			}
+			System.out.println();
+			
 			/**
 			 * POST-PROCESSING
 			 * Use abstract syntax tree (parseTree) and translate to HTML5 file

@@ -139,7 +139,6 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	 */
 	public void ridWhiteSpace() {
 		while (isSpace(nextChar)) {
-			System.out.println("Rid white space.");
 			getCharacter();
 		}
 		//reset position for other methods
@@ -164,7 +163,6 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	 * helper method to add token
 	 */
 	public void addToken (){
-		//MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
 		MyCompiler.currentToken = MyCompiler.nextToken;
 	}
 }
