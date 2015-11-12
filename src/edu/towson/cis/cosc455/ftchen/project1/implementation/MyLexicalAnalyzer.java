@@ -8,6 +8,10 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	private int position = currentPosition;
 	private String nextChar = nextCharacter;
 	
+	/**
+	 * Starts lexical and syntax analysis. Calls syntaxAnalyzer.
+	 * @param line
+	 */
 	public void start(String line)
 	{
 		sourceLine = line;
@@ -25,46 +29,44 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	}
 	
 	//@Override
+	/**
+	 * gets next token, consider if it's a special token or just regular text
+	 */
 	public void getNextToken() {
 		getCharacter();
-
-		//while (position < sourceLine.length()) {
-			if (isSpecial(nextChar)) {
-				MyCompiler.nextToken = nextChar;
-				if (!nextIsAddress(nextChar)) {
+		if (isSpecial(nextChar)) {
+			MyCompiler.nextToken = nextChar;
+			if (!nextIsAddress(nextChar)) {
+				getCharacter();
+				while (!isSpace(nextChar) && position < sourceLine.length()) {
+					MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 					getCharacter();
-					while (!isSpace(nextChar) && position < sourceLine.length()) {
-						MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
-						getCharacter();
-					}
-					//System.out.println("~~~~~~~~" + MyCompiler.nextToken);
-				}
-				try {
-					if (lookupToken()) {
-						//System.out.println("LOOKING UP");
-						addToken();
-					}
-					else
-						throw new CompilerException("Error. " + MyCompiler.nextToken + " is an invalid token."
-								+ " A lexical error has occured.");
-				}
-				catch (CompilerException e) {
-					System.out.println(e.getErrorMessage());
-					System.exit(1);
 				}
 			}
-			else{
-				//System.out.println("not special. getting next text");
-				//System.out.println("!!!!!!!!!" + MyCompiler.nextToken);
-				getNextText();
-				addToken();
+			try {
+				if (lookupToken()) {
+					addToken();
+				}
+				else
+					throw new CompilerException("Error. " + MyCompiler.nextToken + " is an invalid token."
+							+ " A lexical error has occured.");
 			}
-		//}
+			catch (CompilerException e) {
+				System.out.println(e.getErrorMessage());
+				System.exit(1);
+			}
+		}	
+		else{
+			getNextText();
+			addToken();
+		}
 	}
 	
+	/**
+	 * method to get regular text
+	 */
 	public void getNextText() {
 		MyCompiler.nextToken = nextChar;
-		//System.out.println("next token is::: " + MyCompiler.nextToken);
 		getCharacter();
 		while (!isSpecial(nextChar) && position < sourceLine.length()) {
 			MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
@@ -74,20 +76,28 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	}
 
 	//@Override
+	/**
+	 * helper method to get character
+	 */
 	public void getCharacter() {
 		if (position < sourceLine.length()) {
 			nextChar = sourceLine.substring(position, position+1);
 			position++;
-			//System.out.println("nextChar is: " + nextChar);
 		}
 	}
 
 	//@Override
+	/**
+	 * helper method to add character to token
+	 */
 	public void addCharacter() {
 		MyCompiler.nextToken = MyCompiler.nextToken + nextChar;
 	}
 
 	//@Override
+	/**
+	 * helper method to identify space
+	 */
 	public boolean isSpace(String c) {
 		if (nextChar.equals(" ")){
 			return true;
@@ -95,6 +105,11 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		return false;
 	}
 	
+	/**
+	 * helper method to identify special (token) starter characters
+	 * @param c
+	 * @return
+	 */
 	public boolean isSpecial(String c) {
 		if (c.equals("#") || c.equals("^") || c.equals("<") || c.equals(">") || c.equals("{") || c.equals("}")|| 
 				c.equals("$") || c.equals("=") || c.equals("*") || c.equals("+") || c.equals(";") || 
@@ -107,6 +122,11 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 		}
 	}
 	
+	/**
+	 * helper method to identify address starter/end tokens because they don't need whitespace-rules.
+	 * @param c
+	 * @return
+	 */
 	public boolean nextIsAddress(String c) {
 		if (c.equals("@") || c.equals("%") || c.equals("[") || c.equals("]") || c.equals("(") )
 			return true;
@@ -114,6 +134,9 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 			return false;
 	}
 	
+	/**
+	 * helper method to get rid of white space
+	 */
 	public void ridWhiteSpace() {
 		while (isSpace(nextChar)) {
 			System.out.println("Rid white space.");
@@ -124,23 +147,24 @@ public class MyLexicalAnalyzer implements LexicalAnalyzer {
 	}
 
 	//@Override
+	/**
+	 * helper method to look up valid tokens
+	 */
 	public boolean lookupToken() {
-		//System.out.println("Check " + MyCompiler.nextToken);
 		for (String s : MyCompiler.tokens)
 		{
 			if (s.equalsIgnoreCase(MyCompiler.nextToken)) {
-				//System.out.println(s + " equals " + MyCompiler.nextToken + ". Return true.");
 				return true;
 			}
 		}
-		//System.out.println(MyCompiler.nextToken + " :: All failed, returning false.");
 		return false;
 	}
 	
+	/**
+	 * helper method to add token
+	 */
 	public void addToken (){
-		MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
+		//MyCompiler.gatheredTokens.add(MyCompiler.nextToken);
 		MyCompiler.currentToken = MyCompiler.nextToken;
-		//System.out.println("Lex says, currentToken is now: " + MyCompiler.currentToken);
-		//System.out.println("Lex says, nextChar is: " + nextChar);
 	}
 }

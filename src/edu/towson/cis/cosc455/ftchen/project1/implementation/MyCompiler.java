@@ -8,17 +8,19 @@ public class MyCompiler {
 	public static String currentToken = "";
 	public static String nextToken = "";
 	public static ArrayList <String> tokens = new ArrayList <String>();
+	public static ArrayList <String> beginTokens = new ArrayList <String>();
+	public static ArrayList <String> endTokens = new ArrayList <String>();
 	public static ArrayList <String> gatheredTokens = new ArrayList <String>();
 	public static MyLexicalAnalyzer lexicalAnalyzer = new MyLexicalAnalyzer();
 	public static MySyntaxAnalyzer syntaxAnalyzer = new MySyntaxAnalyzer();
 	public static MySemanticAnalyzer semanticAnalyzer = new MySemanticAnalyzer();
-	public static Stack <String> parseTree = new Stack <String>();
+	public static ArrayList <String> parseTree = new ArrayList <String>();
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//System.out.println("runs");
 		
-		//Generate ArrayList of valid tokens
+		/**
+		 * Generate ArrayList of valid tokens, ArrayList of valid beginTokens, and ArrayList of end endTokens
+		 */
 		tokens.add(Tokens.DOCB);
 		tokens.add(Tokens.DOCE);
 		tokens.add(Tokens.HEAD);
@@ -42,9 +44,15 @@ public class MyCompiler {
 		tokens.add(Tokens.ADDRESSB);
 		tokens.add(Tokens.ADDRESSE);
 		
-		//Check file extension and if possible, read from file
+		/**
+		 * PRE-PROCESSING
+		 * Check file extension and if possible, read from file.
+		 * Throw errors if file not found or if failed to read from file.
+		 */
 		if (args[0].substring(args[0].length()-4,args[0].length()).equals(".mkd")){
-			//VALID FILE - READ FROM FILE
+			/**
+			 * Valid file - read.
+			 */
 			FileReader fr;
 			BufferedReader br;
 			try {
@@ -53,36 +61,68 @@ public class MyCompiler {
 				String sourceLine = "";
 				String line = "";
 				while ( (line = br.readLine()) != null){
-					//generate all sourceLine from document for easy parsing
+					/**
+					 * generate all sourceLine from document for easy parsing
+					 */
 					sourceLine = sourceLine + line;
 				}
-				//Call Lexical Analyzer
+				/**
+				 * Call Lexical Analyzer
+				 */
 				System.out.println(sourceLine);
 				lexicalAnalyzer.start(sourceLine);
-				
-			} catch (FileNotFoundException e) {
+			}
+			catch (FileNotFoundException e) {
 				System.out.println("Error. File not found.");
 				System.exit(1);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				System.out.println("Error. I/O Exception occurred. Failed to read from file.");
 				System.exit(1);
 			}
 			
-			
-			//Call Lexical Analyzer
-			System.out.println();
+			/*
+			 */
 			System.out.println();
 			System.out.println("The gathered tokens are: ");
 			for(String s : gatheredTokens) {
 				System.out.println("::" + s + "::");
 			}
+			/**
+			 * POST-PROCESSING
+			 * Use abstract syntax tree (parseTree) and translate to HTML5 file
+			 * Generate and write file, then close.
+			 */
+			String filename = args[0].substring(0,args[0].length()-4) + ".html";
+			try {
+				FileWriter fileWriter = new FileWriter(filename);
+				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+				
+				/**
+				 * Read from parseTree, add to buffered reader to generate HTML
+				 */
+				bufferedWriter.write(semanticAnalyzer.generateHTML());
+				
+				//bufferedWriter.write("~");
+				//bufferedWriter.newLine();
+				
+				/**
+				 * close bufferedWriter
+				 */
+				bufferedWriter.close();
+				
+			}
+			catch (IOException e) {
+				System.out.println("Error. I/O Exception occurred. Failed to write to file.");
+				System.exit(1);
+			}
 		}
 		else {
-			//INVALID FILE
+			/**
+			 * INVALID FILE
+			 */
 			System.out.println("Error, invalid file. File extension must be .mkd");
 		}
-				
-		//System.out.println("still runs");
 	}
 
 }
