@@ -22,6 +22,8 @@ public class MySemanticAnalyzer {
 	 */
 	public void reorderStack() {
 		int variables = -1;
+		int variableCount = 0;
+		boolean repeat = true;
 		//try {
 			while (variables != 0)
 			{
@@ -32,13 +34,14 @@ public class MySemanticAnalyzer {
 				if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.USEB)) {
 					//"use" case
 					System.out.println("[use case]");
-					variables++;
+					//variables++;
 					if (scopeName.size() > 0) {
 						if (isDeclared(reordered.peek())) {
 							System.out.println(reordered.peek() + " equals " + scopeName.get(scopeName.size()-1));
 						}
 					}
 					else {
+						variables++;
 						System.out.println("variable not yet defined");
 						System.out.println(reordered.push(MyCompiler.parseTree.pop())); //push $USE
 					}
@@ -69,12 +72,13 @@ public class MySemanticAnalyzer {
 					System.out.println("[begin case]");
 					if (MyCompiler.parseTree.peek().equalsIgnoreCase(Tokens.DEFB)) {
 						System.out.println("DO SOMETHING");
-						MyCompiler.parseTree.pop(); //pop $DEF
+						MyCompiler.parseTree.pop(); //pop $DEB
 						//run back through reordered stack to fill in variable usages
 						while (reordered.size() > 0) {
 							if (reordered.peek().equalsIgnoreCase(Tokens.USEB)) {
 								reordered.pop(); //pop $USE
-								if (reordered.peek().equalsIgnoreCase(scopeName.get(scopeName.size()-1))) {
+								if (scopeName.isEmpty()) {System.out.println("no defined variables");}
+								else if (reordered.peek().equalsIgnoreCase(scopeName.get(scopeName.size()-1))) {
 									reordered.pop(); //pop variable name
 									MyCompiler.parseTree.push(scopeValue.get(scopeValue.size()-1)); //push variable value
 									reordered.pop(); //pop $END
@@ -83,7 +87,7 @@ public class MySemanticAnalyzer {
 								}
 								else {
 									System.out.println("11111111" + MyCompiler.parseTree.push(Tokens.USEB)); //wrong variable. push $USE
-									System.out.println("22222222" +MyCompiler.parseTree.push(reordered.pop())); //.. push variable name
+									System.out.println("22222222" + MyCompiler.parseTree.push(reordered.pop())); //.. push variable name
 									System.out.println("variable replacement not done!");
 								}
 							}
@@ -97,7 +101,7 @@ public class MySemanticAnalyzer {
 								System.out.println("finished else");
 							}
 						}
-						while(MyCompiler.parseTree.size() > 0)
+						while (MyCompiler.parseTree.size() > 0)
 								System.out.println(reordered.push(MyCompiler.parseTree.pop()));
 					}
 					else
